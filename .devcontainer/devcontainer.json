@@ -1,0 +1,25 @@
+{
+  "name": "LSP Notatki Dev",
+  "build": {
+    "context": "..",
+    "dockerfile": "../Dockerfile",
+    "target": "dev"
+  },
+  "forwardPorts": [8000, 5173],
+  "containerEnv": {
+    "CHOKIDAR_USEPOLLING": "true",
+    "CHOKIDAR_INTERVAL": "300",
+    "WATCHPACK_POLLING": "true"
+  },
+  "postCreateCommand": "pip install -r backend/requirements.txt && cd frontend && (npm ci || npm i)",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "Vue.volar",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

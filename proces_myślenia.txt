@@ -1,0 +1,56 @@
+W tym pliku będę na bieżącą opisywał mój proces myślenia i podejmowane decyzje podczas tworzenia projektu.
+
+1 Architektura
+
+Backend jest tak niewielki, że najłatwiej wszystko będzie zrobić w fastapi. Mimo wszystko, wolę zrobić to w prostej bazie danych niż in-memory. więc uzyjemy SQLite.
+Frontend to oczywiście Vue.js 3 z Vite + typescript.
+Całość będzie w pojedynczym kontenerze w dockerze.
+
+Pozostałe założenia:
+- brak autoryzacji, loginów ani kont użytkowników
+- notatki są globalnie widoczne i każdy ma rwx
+
+2 Instalacje
+
+Super, udało mi się postawić dockerfile i wszystko zainstalować. Możemy zaczynać
+
+3 Planowanie
+
+Dobra, teraz pora zastanowić się, co by tutaj zrobić. W przypadku niewielkich aplikacji lubię tylko rozpisać sobie strukturę bazy danych, ale całym backendem zająć się dopiero, kiedy na frontendzie już coś się dzieje. Oto więc moja rozpiska endpointów. To będzie takie trochę TDD - stworzę frontend z założeniem, że te endpointy będą dokładnie takie, a dopiero potem zajmę się nimi samymi.
+
+GET api/notes - zrzuca JSONa z wszystkimi notatkami. Format notatki:
+{ "id": number, "title": string, "content": string, "createdAt": string (ISO 8601), "favorite": boolean }
+
+POST api/notes - dodaje notatkę. Jeśli niepoprawna, zwraca błąd.
+
+PUT api/notes/:id - edycja notatki (ewentualnie zmienię to na PATCH, może okazać się wygodniejsze)
+
+DELETE api/notes/:id - usunięcie notatki
+
+Do tego, dodam po jednym teście jednostkowym sprawdzającym każdy z tych endpointów. Nie będę pisał ich więcej, założę tylko jeden poprawny format który ma działać.
+
+
+Teraz trzeba zastanowić się nad frontendem. Na głównej stronie będzie po prostu dashboard z listą notatek z ich tytułami, posortowane datami w grupach ulubione i pozostałe. Każdą można będzie kliknąć - to otworzy panel edycji notatki, w którym jest edycja pól tekstowych title i content, podgląd kiedy została stworzona (z opcją nadpisania na datę edycji jako checkbox) i gwiazdka dodająca do ulubionych. Będzie też ikonka śmietnika do usunięcia.
+
+Nad dashboardem będzie też + do dodawania nowej notatki, który otworzy panel identyczny do panelu edycji. Nie dodaję paginacji, notatki będą rozciągały się w nieskończoność w dół. Gdybym miał ją zaimplementować, zrobiłbym to przez ?page w url i kazał zająć się tym backendowi.
+
+Do notatki będziemy dostawać się przez vue router z opcjonalnym :id w url. Dodam też stronę 404 na nieistniejące id notatki.
+
+Widzę też, że mam dodać filtrowanie. Dodam opcję "pokaż tylko ulubione" oraz wyszukiwanie po frazie. Pewnie lepiej wyszukiwać po frazie na backendzie - zaraz zdecyduję, czy będę chciał zmodyfikować GET api/notes?optional_filter=phrase. To i tak jest kwestia na sam koniec.
+
+Jeśli chodzi o testy, sprawdzę po prostu działanie klikania + dodanie i usunięcie notatek w dziwnej kolejności, co czasem bywa problematyczne dla state'u vue.
+
+
+Architektura rozbicia na komponenty też jest dość ważna. Nie będę wydzielał komponentów typu "pole tekstowe" ani "button", bo w tak niewielkiej aplikacji nie ma to sensu. Zrobię natomiast komponent na noteCard wyświetlaną w dashboardzie.
+Komponenty podstron będą następujące: dashboard, note... i to w sumie tyle, dwa komponenty.
+
+
+Warto też pomyśleć o wyglądzie. Nie będę robił dwóch motywów (ciemny i jasny), zrobię po prostu ciemny. Ostatnio spodobała mi się zielona kolorystyka, więc takiej właśnie użyję dzisiaj. Będę używał scss, bo czysty css potrafi zrobić się bardzo nieczytelny, nawet przy niewielkiej apllikacji.
+
+
+Na sam koniec napiszę dokumentację aplikacji i testów.
+
+
+4 Pierwszy etap pisania kodu skończony!
+Napisałem szkic frontendu, bez funkcji z api. Co to oznacza? Tworzę backend i wracam zaraz do frontendu.
+

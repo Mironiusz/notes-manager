@@ -1,0 +1,316 @@
+@use "variables" as *;
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: $bg-color;
+	color: $font-color;
+	font-family: "Inter", sans-serif;
+}
+
+.footer {
+	padding: 1rem 0;
+	height: 50px;
+	&-text {
+		color: $font-color;
+		font-size: 0.8rem;
+		text-align: center;
+	}
+}
+
+.nav {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	width: 100%;
+	height: 100px;
+	background: rgba($bg-color, 0.85);
+	backdrop-filter: saturate(140%) blur(8px);
+	border-bottom: 1px solid rgba($card-border, 0.7);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&-text {
+		color: $accent;
+		font-size: 3rem;
+		text-decoration: none;
+		letter-spacing: 0.2px;
+		line-height: 1;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+
+		position: relative;
+		transition: color 0.2s ease;
+
+		&:hover {
+			color: darken($accent, 6%);
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			bottom: -8px;
+			width: 0%;
+			height: 2px;
+			background: currentColor;
+			transition: width 0.2s ease;
+		}
+		&:hover::after,
+		&:focus-visible::after {
+			width: 100%;
+		}
+	}
+}
+
+.content {
+	display: flex;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1200px;
+	min-height: calc(100vh - 150px);
+}
+
+.dashboard {
+	width: 100%;
+	padding: 0.5rem;
+
+	&-title {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	&-content {
+		line-height: 1;
+	}
+
+	&-create {
+		transition: 0.2s ease-in-out;
+		background: $accent;
+		border: none;
+		color: $card-bg;
+		cursor: pointer;
+		font-size: 1.5rem;
+		padding: 0.5rem 1rem;
+		border-radius: 5px;
+
+		&:hover {
+			background: darken($accent, 10%);
+		}
+	}
+}
+
+.note-card {
+	transition: 0.2s ease-in-out;
+	cursor: pointer;
+	background: $card-bg;
+	border: 1px solid $card-border;
+	border-radius: 5px;
+	padding: 1rem;
+	margin: 1rem 0;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	width: 80%;
+
+	display: grid;
+	grid-template-columns: 2fr 4fr 2fr 0.5fr 0.5fr;
+	gap: 1rem;
+	align-items: center;
+
+	&:hover {
+		background-color: darken($bg-color, 10%);
+	}
+
+	&-title {
+		font-weight: bold;
+		color: $accent;
+	}
+
+	&-fav {
+		transition: 0.2s ease-in-out;
+		background: transparent;
+		border: none;
+		color: $gold;
+		cursor: pointer;
+		font-size: 3rem;
+		line-height: 1rem;
+
+		&:hover {
+			color: darken($gold, 10%);
+		}
+	}
+
+	&-delete {
+		transition: 0.2s ease-in-out;
+		background: transparent;
+		border: none;
+		color: $red;
+		cursor: pointer;
+		font-size: 2.5rem;
+		line-height: 1rem;
+
+		&:hover {
+			color: darken($red, 20%);
+		}
+	}
+}
+
+.note {
+	width: 60%;
+	padding: 1rem;
+	border: 1px solid $card-border;
+	border-radius: 5px;
+	background: $card-bg;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	margin: 0 auto;
+
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
+
+	&-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		input {
+			flex: 1;
+			border: 1px solid darken($card-border, 5%);
+			border-radius: 5px;
+			padding: 0.5rem;
+			margin-right: 1rem;
+			font-size: 1rem;
+
+			&:focus {
+				outline: none;
+				border-color: $accent;
+			}
+		}
+
+		span {
+			font-size: 0.8rem;
+			color: darken($font-color, 10%);
+		}
+	}
+
+	&-body {
+		flex: 1;
+		border: 1px solid darken($card-border, 5%);
+		border-radius: 5px;
+		padding: 0.5rem;
+		font-size: 1rem;
+		min-height: 300px;
+
+		&:focus {
+			outline: none;
+			border-color: $accent;
+		}
+
+		& textarea {
+			width: 100%;
+			height: 100%;
+			border: none;
+			resize: none;
+			font-size: 1rem;
+			font-family: lato;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	&-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 2rem;
+		align-items: center;
+
+		&-save {
+			transition: 0.2s ease-in-out;
+			background: transparent;
+			border: none;
+			color: $accent;
+			cursor: pointer;
+			font-size: 2.5rem;
+			line-height: 3rem;
+
+			&:hover {
+				color: darken($accent, 10%);
+			}
+		}
+
+		&-delete {
+			transition: 0.2s ease-in-out;
+			background: transparent;
+			border: none;
+			color: $red;
+			cursor: pointer;
+			font-size: 2.5rem;
+			line-height: 3rem;
+
+			&:hover {
+				color: darken($red, 20%);
+			}
+		}
+
+		&-fav {
+			transition: 0.2s ease-in-out;
+			background: transparent;
+			border: none;
+			color: $gold;
+			cursor: pointer;
+			font-size: 3rem;
+			line-height: 3rem;
+
+			&:hover {
+				color: darken($gold, 10%);
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.nav {
+		&-text {
+			font-size: 2rem;
+		}
+	}
+
+	.content {
+		width: 100vw;
+	}
+
+	.dashboard {
+		display: flex;
+		flex-direction: column;
+
+		&-title {
+			width: 100%;
+			text-align: center;
+		}
+
+		&-create {
+			width: 80%;
+			margin: auto;
+		}
+	}
+
+	.note-card {
+		width: 100%;
+	}
+
+	.note {
+		width: 95%;
+
+		&-actions {
+			justify-content: space-between;
+		}
+	}
+}

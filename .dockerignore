@@ -1,0 +1,15 @@
+# Python
+**/__pycache__/
+**/*.pyc
+.venv/
+venv/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# VCS / system
+.git/
+.gitignore
+.DS_Store
+Thumbs.db
