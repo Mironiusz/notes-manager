@@ -1,12 +1,12 @@
-W tym pliku będę na bieżącą opisywał mój proces myślenia i podejmowane decyzje podczas tworzenia projektu.
+W tym pliku będę na bieżąco opisywał mój proces myślenia i podejmowane decyzje podczas tworzenia projektu.
 
 1 Architektura
 
-Backend jest tak niewielki, że najłatwiej wszystko będzie zrobić w fastapi. Mimo wszystko, wolę zrobić to w prostej bazie danych niż in-memory. więc uzyjemy SQLite.
+Backend jest tak niewielki, że najłatwiej wszystko będzie zrobić w fastapi. Mimo wszystko, wolę zrobić to w prostej bazie danych niż in-memory, więc uzyjemy SQLite.
 Frontend to oczywiście Vue.js 3 z Vite + typescript.
 Całość będzie w pojedynczym kontenerze w dockerze.
 
-Pozostałe założenia:
+Zabezpieczenia:
 - brak autoryzacji, loginów ani kont użytkowników
 - notatki są globalnie widoczne i każdy ma rwx
 
@@ -19,18 +19,18 @@ Super, udało mi się postawić dockerfile i wszystko zainstalować. Możemy zac
 Dobra, teraz pora zastanowić się, co by tutaj zrobić. W przypadku niewielkich aplikacji lubię tylko rozpisać sobie strukturę bazy danych, ale całym backendem zająć się dopiero, kiedy na frontendzie już coś się dzieje. Oto więc moja rozpiska endpointów. To będzie takie trochę TDD - stworzę frontend z założeniem, że te endpointy będą dokładnie takie, a dopiero potem zajmę się nimi samymi.
 
 GET api/notes - zrzuca JSONa z wszystkimi notatkami. Format notatki:
-{ "id": number, "title": string, "content": string, "createdAt": string (ISO 8601), "favorite": boolean }
+{ "id": number, "title": string, "content": string, "createdAt": string (ISO 8601), "updatedAt": string (ISO 8601), "favorite": boolean }
 
 POST api/notes - dodaje notatkę. Jeśli niepoprawna, zwraca błąd.
 
-PUT api/notes/:id - edycja notatki (ewentualnie zmienię to na PATCH, może okazać się wygodniejsze)
+PATCH api/notes/:id - edycja notatki (myślę, że mimo niezgodności z zadaniem, każdy się zgodzi że PATCH jest tutaj lepszy. W przypadku pracy dla klienta dopytałbym się o to)
 
 DELETE api/notes/:id - usunięcie notatki
 
 Do tego, dodam po jednym teście jednostkowym sprawdzającym każdy z tych endpointów. Nie będę pisał ich więcej, założę tylko jeden poprawny format który ma działać.
 
 
-Teraz trzeba zastanowić się nad frontendem. Na głównej stronie będzie po prostu dashboard z listą notatek z ich tytułami, posortowane datami w grupach ulubione i pozostałe. Każdą można będzie kliknąć - to otworzy panel edycji notatki, w którym jest edycja pól tekstowych title i content, podgląd kiedy została stworzona (z opcją nadpisania na datę edycji jako checkbox) i gwiazdka dodająca do ulubionych. Będzie też ikonka śmietnika do usunięcia.
+Teraz trzeba zastanowić się nad frontendem. Na głównej stronie będzie po prostu dashboard z listą notatek z ich tytułami, posortowane datami w grupach ulubione i pozostałe. Każdą można będzie kliknąć - to otworzy panel edycji notatki, w którym jest edycja pól tekstowych title i content, podgląd kiedy została stworzona i gwiazdka dodająca do ulubionych. Będzie też ikonka śmietnika lub X do usunięcia.
 
 Nad dashboardem będzie też + do dodawania nowej notatki, który otworzy panel identyczny do panelu edycji. Nie dodaję paginacji, notatki będą rozciągały się w nieskończoność w dół. Gdybym miał ją zaimplementować, zrobiłbym to przez ?page w url i kazał zająć się tym backendowi.
 
@@ -53,4 +53,10 @@ Na sam koniec napiszę dokumentację aplikacji i testów.
 
 4 Pierwszy etap pisania kodu skończony!
 Napisałem szkic frontendu, bez funkcji z api. Co to oznacza? Tworzę backend i wracam zaraz do frontendu.
+
+5 Zrobiłem backend! Bardzo prosta wersja, ale ważne że działa. W tym miejscu testy jednostkowe są bardzo przydatne.
+
+6 No i dobra, frontend ładnie łączy się z backendem. Do tego stylowanie wyszło mi naprawdę nieźle, mimo że w przyszłości na pewno zmodyfikowałbym ikony i logo. To jednak nie jest coś na projekt rekrutacyjny. Dokończę pisanie testów frontendu, zrobię ostatnie poprawki, dodam toasty i zostanie mi sama dokumentacja.
+
+7 Testy na frontend napisane, zrobiłem trzy testy dla komponentu NoteCard, to chyba starczy. Dokumentacja i mogę wysyłać gotowy projekt.
 

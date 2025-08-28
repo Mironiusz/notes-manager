@@ -25,6 +25,7 @@
 	import { ref, computed } from "vue";
 	import { useRoute, useRouter } from "vue-router";
 	import axios from "axios";
+	import { toast } from "vue3-toastify";
 
 	type Note = {
 		id?: number;
@@ -82,7 +83,7 @@
 	async function saveNote() {
 		try {
 			if (!note.value.title.trim()) {
-				alert("Tytuł jest wymagany");
+				toast.error("Tytuł jest wymagany");
 				return;
 			}
 
@@ -94,7 +95,7 @@
 				};
 				const res = await api.patch<Note>(`/${noteId}`, payload);
 				note.value = res.data;
-				alert("Zapisano zmiany");
+				toast.success("Zapisano zmiany");
 			} else {
 				const payload = {
 					title: note.value.title,
@@ -107,7 +108,7 @@
 			}
 		} catch (e) {
 			console.error("Błąd zapisu notatki:", e);
-			alert("Nie udało się zapisać notatki");
+			toast.error("Nie udało się zapisać notatki");
 		}
 	}
 
@@ -120,7 +121,7 @@
 			router.replace("/");
 		} catch (e) {
 			console.error("Błąd usuwania notatki:", e);
-			alert("Nie udało się usunąć notatki");
+			toast.error("Nie udało się usunąć notatki");
 		}
 	}
 

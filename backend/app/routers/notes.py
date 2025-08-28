@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Literal, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session, select, func, col
+from sqlmodel import Session, select, col
 from datetime import datetime, timezone
 
 from ..db import get_session
@@ -10,28 +10,30 @@ from ..schemas import NoteCreate, NoteUpdate
 
 router = APIRouter(prefix="/api/v1/notes", tags=["notes"])
 
-SortType = Literal["created_desc", "created_asc", "updated_desc", "updated_asc"]
+SortType = Literal[
+    "created_desc",
+    "created_asc",
+    "updated_desc",
+    "updated_asc",
+]
 
 @router.get("", response_model=list[Note])
 def list_notes(
     session: Session = Depends(get_session),
-    query: Optional[str] = Query(default=None, description="fraza do wyszukiwania"),
+    query: Optional[str] = Query(default=None, description="fraza do wyszukiwania (tytuł)"),
     favourite: Optional[bool] = Query(default=None, description="true/false"),
-    sort: SortType = "updated_desc",
-    page: int = 1,
-    page_size: int = 50,
+    sort: SortType = "created_desc",
 ):
     stmt = select(Note)
+
     if query:
         q = f"%{query}%"
-        stmt = stmt.where(
-            (col(Note.title).collate("NOCASE").like(q)) |
-            (col(Note.content).collate("NOCASE").like(q))
-        )
+        stmt = stmt.where(col(Note.title).collate("NOCASE").like(q))
+
     if favourite is not None:
         stmt = stmt.where(Note.is_favourite == favourite)
 
-    if sort == "created_desc":
+    elif sort == "created_desc":
         stmt = stmt.order_by(Note.created_at.desc())
     elif sort == "created_asc":
         stmt = stmt.order_by(Note.created_at.asc())
@@ -40,9 +42,6 @@ def list_notes(
     else:
         stmt = stmt.order_by(Note.updated_at.desc())
 
-    page = max(page, 1)
-    page_size = max(min(page_size, 200), 1)
-    stmt = stmt.offset((page - 1) * page_size).limit(page_size)
 
     return session.exec(stmt).all()
 

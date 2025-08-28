@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "sass:color";
 
 * {
 	box-sizing: border-box;
@@ -50,7 +51,7 @@ body {
 		transition: color 0.2s ease;
 
 		&:hover {
-			color: darken($accent, 6%);
+			color: color.adjust($accent, $lightness: -6%);
 		}
 
 		&::after {
@@ -97,13 +98,73 @@ body {
 		border: none;
 		color: $card-bg;
 		cursor: pointer;
-		font-size: 1.5rem;
-		padding: 0.5rem 1rem;
+		line-height: 1rem;
+		font-size: 1rem;
+		padding: 0.5rem 0.75rem;
 		border-radius: 5px;
 
 		&:hover {
-			background: darken($accent, 10%);
+			background: color.adjust($accent, $lightness: -10%);
 		}
+	}
+
+	&-header {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	&-filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.filter-input {
+		flex: 1 1 220px;
+		min-width: 200px;
+		border: 1px solid #dddddd;
+		border-radius: 8px;
+		padding: 0.5rem 0.75rem;
+
+		&:focus {
+			outline: none;
+			border-color: $accent;
+		}
+	}
+
+	.filter-select {
+		flex: 1 1 220px;
+		min-width: 200px;
+		border: 1px solid #dddddd;
+		border-radius: 8px;
+		padding: 0.5rem 0.75rem;
+		background-color: $card-bg;
+
+		&:focus {
+			outline: none;
+			border-color: $accent;
+		}
+	}
+
+	.filter-check {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		user-select: none;
+	}
+
+	.group-header {
+		font-weight: 600;
+		opacity: 0.85;
+		margin: 0.75rem 0 0.25rem;
+	}
+
+	.empty {
+		opacity: 0.7;
+		font-style: italic;
+		padding: 1rem 0;
 	}
 }
 
@@ -124,7 +185,16 @@ body {
 	align-items: center;
 
 	&:hover {
-		background-color: darken($bg-color, 10%);
+		background-color: color.adjust($bg-color, $lightness: -10%);
+	}
+
+	& span {
+		display: block;
+		max-width: 100%;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: normal;
+		text-overflow: ellipsis;
 	}
 
 	&-title {
@@ -142,7 +212,7 @@ body {
 		line-height: 1rem;
 
 		&:hover {
-			color: darken($gold, 10%);
+			color: color.adjust($gold, $lightness: -10%);
 		}
 	}
 
@@ -156,7 +226,7 @@ body {
 		line-height: 1rem;
 
 		&:hover {
-			color: darken($red, 20%);
+			color: color.adjust($red, $lightness: -20%);
 		}
 	}
 }
@@ -181,7 +251,7 @@ body {
 
 		input {
 			flex: 1;
-			border: 1px solid darken($card-border, 5%);
+			border: 1px solid color.adjust($card-border, $lightness: -5%);
 			border-radius: 5px;
 			padding: 0.5rem;
 			margin-right: 1rem;
@@ -195,13 +265,13 @@ body {
 
 		span {
 			font-size: 0.8rem;
-			color: darken($font-color, 10%);
+			color: color.adjust($font-color, $lightness: -10%);
 		}
 	}
 
 	&-body {
 		flex: 1;
-		border: 1px solid darken($card-border, 5%);
+		border: 1px solid color.adjust($card-border, $lightness: -5%);
 		border-radius: 5px;
 		padding: 0.5rem;
 		font-size: 1rem;
@@ -242,7 +312,7 @@ body {
 			line-height: 3rem;
 
 			&:hover {
-				color: darken($accent, 10%);
+				color: color.adjust($accent, $lightness: -10%);
 			}
 		}
 
@@ -256,7 +326,7 @@ body {
 			line-height: 3rem;
 
 			&:hover {
-				color: darken($red, 20%);
+				color: color.adjust($red, $lightness: -20%);
 			}
 		}
 
@@ -270,7 +340,7 @@ body {
 			line-height: 3rem;
 
 			&:hover {
-				color: darken($gold, 10%);
+				color: color.adjust($gold, $lightness: -10%);
 			}
 		}
 	}
